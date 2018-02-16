@@ -1,0 +1,26 @@
+{% extends "home.html" %}
+{% block title %}Form Input{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+<br><br>
+
+
+{% for dc in get_flashed_messages() %}
+<b>Fields that were a problem:</b><br><br>
+    {% for key in dc %}
+        * <b>{{ key }}</b> - <i> {{ dc[key][0] }}</i> <br>
+    {% endfor %}
+{% endfor %}
+
+<br><br>
+  <h1>Form</h1>
+  <form action="{{url_for('show_answers')}}" method="POST">
+    {{ form.hidden_tag() }}
+    {{ form.name.label }} {{ form.name() }}<br>
+    {{ form.number_members.label }} {{ form.number_members() }}<br>
+    {{ form.passcode.label }} {{ form.passcode() }}<br>
+    {{ form.submit() }}<br>
+  </form>
+{% endblock %}

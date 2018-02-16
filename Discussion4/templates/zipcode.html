@@ -1,0 +1,24 @@
+<html>
+<body>
+
+<form action="http://localhost:5000/zipcode" method="POST">
+	{{ form.csrf_token }}
+  	{{ form.weather.label }} {{ form.weather() }}<br>
+    {{ form.submit() }}<br>
+</form> 
+{{ error }}
+{% if name %}
+	Name: {{ name }}<br>
+	Weather Description: {{ weather }}<br>
+	Temperature: {{ temp }}<br>
+{% endif %}
+
+{% for dc in get_flashed_messages() %}
+    {% for key in dc %}
+        <i> {{ dc[key][0] }}</i> <br>
+    {% endfor %}
+{% endfor %}
+
+
+</body>
+</html>

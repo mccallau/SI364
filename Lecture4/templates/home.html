@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+  <head>
+    {% block head %}
+    <title>{% block title %}{% endblock %} - A Webpage Practicing WTForms</title>
+    {% endblock %}
+  </head>
+  <body>
+    <div id="nav">
+        <ul>
+            <li><a href="{{ url_for('hello_world') }}">Home</a></li>
+            <li><a href="{{ url_for('form_entry') }}">Form</a></li>
+            <li><a href="{{ url_for('show_answers') }}">Results</a></li>
+        </ul>
+    </div>
+    <div id="content">{% block content %}{% endblock %}</div>
+    <div id="footer">
+      {% block footer %}
+
+      <small><i>&copy; Copyright 2018 by SI364 students.</i></small>
+      {% endblock %}
+    </div>
+  </body>
+</html>

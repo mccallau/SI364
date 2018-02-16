@@ -1,0 +1,15 @@
+<html>
+<title>
+</title>
+<body>
+<form method = "GET" action="http://localhost:5000/itunes-result">
+	{{ form.hidden_tag() }}
+	{% for message in get_flashed_messages() %}
+    {{ message }}
+    {% endfor %}
+	<p>{{ form.name.label }}{{ form.name() }}</p>
+    <p>{{ form.age.label }}{{ form.age() }}</p>
+    {{ form.submit() }}
+</form>
+</body>
+</html>

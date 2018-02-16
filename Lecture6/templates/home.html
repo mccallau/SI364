@@ -1,0 +1,15 @@
+<ul>
+    <li><a href="{{ url_for('index') }}">Home</a></li>
+    <li><a href="{{ url_for('cities_and_temps') }}">Cities and their temperatures as seen</a></li>
+    <li><a href="{{ url_for('enter_info') }}">Enter a new city and temperature</a></li>
+</ul>
+
+{% block content %}
+
+{% if num_cities==1 %}
+{{ num_cities }} city saved.
+{% else %}
+{{ num_cities }} cities saved.
+{% endif %}
+
+{% endblock %}

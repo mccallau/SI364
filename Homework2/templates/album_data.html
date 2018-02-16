@@ -1,0 +1,15 @@
+<html>
+<body>
+
+<p>The album title you just submitted was: <b>{{ name }}</b></p>
+<p>On a scale of 1 to 3, you would give it <b>{{ likes }}</b> stars!</p><br>
+
+
+<p><b>Here are some albums that matched your search terms:</b> (if you did not find what you wanted, change your search terms)</p>
+
+{% for item in results[:10] %}
+	<li>{{ item['collectionName'] }}  by  {{ item['artistName'] }}</li>
+{% endfor %}
+
+</body>
+</html>

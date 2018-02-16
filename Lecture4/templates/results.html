@@ -1,0 +1,11 @@
+{% extends "home.html" %}
+{% block title %}See Form Results{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+  <h1>Results for this submission</h1>
+  <p> You have proposed a secret society called <strong>{{ name }}</strong>. </p>
+  <p>The passcode for the discussion forums is currently: {{ passcode }}</p>
+  <p>The capacity of this club is  {{ capacity }} members at a time.</p>
+{% endblock %}

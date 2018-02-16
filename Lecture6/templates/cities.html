@@ -1,0 +1,9 @@
+{% extends 'home.html' %}
+
+{% block content %}
+
+{% for c in cities %}
+    <b>{{ c.name }}</b> - <i>{{ c.temp_fah }} degrees</i> Fahrenheit <br>
+{% endfor %}
+
+{% endblock %}

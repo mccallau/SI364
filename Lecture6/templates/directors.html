@@ -1,0 +1,10 @@
+{% extends 'home.html' %}
+
+{% block content %}
+<ul>
+{% for dir in directors %}
+    <li>{{dir.full_name}} ({{ dir.city }})</li>
+{% endfor %}
+</ul>
+
+{% endblock %}

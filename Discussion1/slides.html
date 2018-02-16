@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HTML Forms</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+      @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600');
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+      body {
+        font-family: 'Source Sans Pro', sans-serif;
+        font-weight: 300;
+      }
+      h1, h2, h3 {
+        font-weight: 400;
+      }
+      .remark-slide-content {
+          font-size: 2em;
+          line-height: 2em;
+          padding-left: 6%;
+          padding-right: 6%;
+      }
+      .remark-code, .remark-inline-code {
+          font-family: 'Ubuntu Mono';
+          line-height: 1.5em;
+      }
+
+      .twocolumns {
+          width: 49%;
+          float: left;
+      }
+      .twocolumns.omega {
+          margin-left: 2%;
+      }
+
+      a{
+        color: #0070e0;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# HTML FORMS
+
+---
+
+# What are HTML forms?
+
+- One of the main points of interaction between a user and a web site or application.
+- Data input by user can be sent to a web server.
+- The form is made of one or more widgets like text fields, buttons, checkboxes, or radio buttons.
+- Widgets can be paired with labels describing their purpose.
+
+---
+
+# Desiging our own form
+
+-  We will design our own HTML contact form
+-  All HTML forms start with a form element as shown below. The form element formally defines a form:
+```html
+<form action="/cgi-bin/hello2.py" method="post">
+</form>
+```
+- All of its attributes are optional but it's considered best practice to set the action and the method attribute.
+---
+
+# Action Attribute
+
+- This attribute defines the location (URL) where the form's collected data should be sent when it is submitted.
+- For example, in the form below the data is sent to an absolute URL:
+```html
+<form action="http://foo.com">
+```
+---
+
+# Action Attribute
+- When using a relative URL, the data is sent to a different URL on the server:
+```html
+<form action="/somewhere_else">
+```
+- When specified with no attributes, as below, the data is sent to the same page that the form is present on:
+```html
+<form>
+```
+---
+
+# Method Attribute
+
+- The <b>method</b> attribute defines which HTTP method to send the data with.
+
+---
+
+# GET Method
+
+- If a form is sent using this method the data sent to the server is appended to the URL.
+- The data is appended to the URL as a series of name/value pairs, with each pair separated by an ampersand (&)
+---
+
+# GET Method
+
+- For example, the URL www.foo.com/?say=Hi&to=Mom will appear in the address bar after submitting the form.
+```html
+<form action="http://foo.com" method="get">
+  <div>
+    <label for="say">What greeting do you want to say?</label>
+    <input name="say" id="say" value="Hi">
+  </div>
+  <div>
+    <label for="to">Who do you want to say it to?</label>
+    <input name="to" value="Mom">
+  </div>
+  <div>
+    <button>SUBMIT</button>
+  </div>
+</form>
+```
+---
+
+# POST Method
+
+- If a form is sent using this method, the data is appended to the body of the HTTP request.
+
+---
+
+# POST Method
+
+- For example, no data is appended to the URL, and the data is included in the request body instead.
+```html
+<form action="http://foo.com" method="post">
+  <div>
+    <label for="say">What greeting do you want to say?</label>
+    <input name="say" id="say" value="Hi">
+  </div>
+  <div>
+    <label for="to">Who do you want to say it to?</label>
+    <input name="to" value="Mom">
+  </div>
+  <div>
+    <button>SUBMIT</button>
+  </div>
+</form>
+```
+---
+
+# HTTP Requests in GET and POST
+In GET:
+```html
+GET /?say=Hi&to=Mom HTTP/1.1
+Host: foo.com
+```
+
+In POST:
+```html
+POST / HTTP/1.1
+Host: foo.com
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 13
+
+say=Hi&to=Mom
+```
+
+
+    </textarea>
+    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      var slideshow = remark.create();
+    </script>
+    <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +
+':35729/livereload.js?snipver=2"></' + 'script>')</script>
+  </body>
+</html>

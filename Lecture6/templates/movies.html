@@ -1,0 +1,10 @@
+{% extends 'home.html' %}
+
+{% block content %}
+<ul>
+{% for m in movies %}
+    <li>{{m.name}} ({{ m.year }})</li>
+{% endfor %}
+</ul>
+
+{% endblock %}
