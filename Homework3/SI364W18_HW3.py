@@ -58,7 +58,8 @@ class Tweet(db.Model):
     __tablename__ = "tweet"
     id = db.Column(db.Integer,primary_key=True)
     text = db.Column(db.String(280))
-    __repr__ = '{{}} (ID: {{}})'.format(text,id)
+    def __repr__(self):
+    	return '{} (ID: {})'.format(self.text,self.id)
     user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
 
 # - User
@@ -75,7 +76,8 @@ class User(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     username = db.Column(db.String(64))
     display_name = db.Column(db.String(124))
-    __repr__ = '{} | ID: {}'.format(username,id)
+    def __repr__(self):
+    	return '{} | ID: {}'.format(self.username,self.id)
     tweets = db.relationship('Tweet',backref='User')
 
 
