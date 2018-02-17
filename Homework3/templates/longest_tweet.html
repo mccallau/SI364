@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<p><b>Longest tweet:</b></p>
+
+<p>{{ longtweet[1] }}</p>
+
+by user: <strong>@{{ longtweet[2] }}</strong> --- {{ longtweet[3] }}
+
+
+{% if not longtweet %}
+    There are no saved tweets to show.
+{% endif %}
+
+<div>
+{% for message in get_flashed_messages() %}
+    <strong>{{ message }}</strong>
+{% endfor %}
+</div>
+
+{% endblock %}

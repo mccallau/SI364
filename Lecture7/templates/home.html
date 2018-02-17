@@ -1,0 +1,12 @@
+<a href="{{ url_for('home') }}">Home</a><br>
+<a href="{{ url_for('all_books') }}">Books</a><br>
+
+{% block stuff %}
+
+<form action="" method="POST">
+    {{ form.title.label() }}{{ form.title() }}<br>
+    {{ form.author.label() }}{{ form.author() }}
+    {{ form.submit() }}
+</form>
+
+{% endblock %}
