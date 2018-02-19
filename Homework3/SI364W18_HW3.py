@@ -74,7 +74,7 @@ class Tweet(db.Model):
 class User(db.Model):
     __tablename__ = "user"
     id = db.Column(db.Integer,primary_key=True)
-    username = db.Column(db.String(64))
+    username = db.Column(db.String(64),unique=True)
     display_name = db.Column(db.String(124))
     def __repr__(self):
     	return '{} | ID: {}'.format(self.username,self.id)
