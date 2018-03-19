@@ -1,0 +1,6 @@
+<ul>
+    {% for r in results %}
+        <li>
+        <h2>Title: {{ r['title'] }}</h2>
+        <h3><a href="https://www.buzzfeed.com/{{ r['canonical_path'] }}" target="_blank">Link</a></h3></li>
+</ul>
