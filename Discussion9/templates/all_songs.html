@@ -1,6 +1,12 @@
 <ul>
 {% for sg in all_songs %}
-<li>{{ sg[0] }} by {{ sg[1] }} - {{ sg[2] }}</li><br>
+<li>{{ sg[0] }} by {{ sg[1] }} - {{ sg[2] }}
+  <form method="POST" action="/update/{{ sg[0] }}">
+	   {{ form.hidden_tag() }}
+     {{ form.submit() }}
+   </form>
+ </li>
+ <br>
 {% endfor %}
 </ul>
 
@@ -9,7 +15,7 @@ There are no saved favorite songs to show.
 {% endif %}
 
 <div>
-{% for message in get_flashed_messages() %} 
+{% for message in get_flashed_messages() %}
 <strong>*** {{ message }} ***</strong>
 {% endfor %}
 </div>

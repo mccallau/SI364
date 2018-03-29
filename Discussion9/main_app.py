@@ -10,7 +10,7 @@ import os
 from flask import Flask, render_template, session, redirect, url_for, flash
 from flask_script import Manager, Shell
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField, FloatField
 from wtforms.validators import Required
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, MigrateCommand # needs: pip/pip3 install flask-migrate
@@ -24,7 +24,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 app.debug = True
 app.config['SECRET_KEY'] = 'hardtoguessstringfromsi364thisisnotsupersecurebutitsok'
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:abc123@localhost/ds9"
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://localhost/ds9"
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -32,9 +32,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 manager = Manager(app)
 # moment = Moment(app) # For time # Later
 db = SQLAlchemy(app) # For database use
-from flask_migrate import Migrate, MigrateCommand
-migrate=Migrate(app,db)
-manager.add_command('db',MigrateCommand)
+
 
 #########
 ######### Everything above this line is important/useful setup, not problem-solving.
@@ -49,7 +47,6 @@ class Album(db.Model):
     __tablename__ = "albums"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
-    producers = db.Column(db.String(64))
     artists = db.relationship('Artist',secondary=collections,backref=db.backref('albums',lazy='dynamic'),lazy='dynamic')
     songs = db.relationship('Song',backref='Album')
 
@@ -67,12 +64,13 @@ class Song(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(64),unique=True) # Only unique title songs
     album_id = db.Column(db.Integer, db.ForeignKey("albums.id"))
-    rating = db.Column(db.Float)
     artist_id = db.Column(db.Integer, db.ForeignKey("artists.id"))
     genre = db.Column(db.String(64))
+    rating = db.Column(db.Float)
 
     def __repr__(self):
         return "{}, genre : {}".format(self.title, self.genre)
+
 
 
 ##### Set up Forms #####
@@ -84,7 +82,15 @@ class SongForm(FlaskForm):
         =[Required()])
     album = StringField("What is the album this song is on?", validators
         =[Required()])
+    rating = FloatField("What is your rating of this song?", validators = [Required()])
     submit = SubmitField('Submit')
+
+class UpdateButtonForm(FlaskForm):
+    submit = SubmitField('Update')
+
+class UpdateInfoForm(FlaskForm):
+    newRating = StringField("What is the new rating of the song?", validators=[Required()])
+    submit = SubmitField('Update')
 
 ##### Helper functions
 
@@ -113,14 +119,15 @@ def get_or_create_album(db_session, album_name, artists_list=[]):
         db_session.commit()
     return album
 
-def get_or_create_song(db_session, song_title, song_artist, song_album, song_genre):
+def get_or_create_song(db_session, song_title, song_artist, song_album, song_genre, song_rating):
     song = db_session.query(Song).filter_by(title=song_title).first()
     if song:
         return song
     else:
         artist = get_or_create_artist(db_session, song_artist)
         album = get_or_create_album(db_session, song_album, artists_list=[song_artist]) # list of one song artist each time -- check out get_or_create_album and get_or_create_artist!
-        song = Song(title=song_title,genre=song_genre,artist_id=artist.id)
+        print("ARTIST ID", artist.id)
+        song = Song(title=song_title,genre=song_genre,artist_id=artist.id, album_id = album.id, rating = song_rating)
         db_session.add(song)
         db_session.commit()
         return song
@@ -150,24 +157,39 @@ def index():
     if form.validate_on_submit():
         if db.session.query(Song).filter_by(title=form.song.data).first(): # If there's already a song with that title, though...nvm. Gotta add something like "(covered by..)"
             flash("You've already saved a song with that title!")
-        get_or_create_song(db.session,form.song.data, form.artist.data, form.album.data, form.genre.data)
+        get_or_create_song(db.session,form.song.data, form.artist.data, form.album.data, form.genre.data, form.rating.data)
         return redirect(url_for('see_all'))
     return render_template('index.html', form=form,num_songs=num_songs)
 
 @app.route('/all_songs')
 def see_all():
+    form = UpdateButtonForm()
     all_songs = [] # To be tuple list of title, genre
     songs = Song.query.all()
     for s in songs:
         artist = Artist.query.filter_by(id=s.artist_id).first()
         all_songs.append((s.title,artist.name, s.genre))
-    return render_template('all_songs.html',all_songs=all_songs)
+    return render_template('all_songs.html',all_songs=all_songs,form=form)
 
 @app.route('/all_artists')
 def see_all_artists():
     artists = Artist.query.all()
     names = [(a.name, len(Song.query.filter_by(artist_id=a.id).all())) for a in artists]
     return render_template('all_artists.html',artist_names=names)
+
+@app.route('/update/<song>', methods = ['GET','POST'])
+def updateSong(song):
+    print(song)
+    form = UpdateInfoForm()
+    if form.validate_on_submit():
+        new_rating = form.newRating.data
+        s = Song.query.filter_by(title = song).first()
+        s.rating = new_rating
+        db.session.commit()
+        flash("Updated rating of " + song)
+        return redirect(url_for('index'))
+    return render_template('update_info.html',song_name = song, form = form)
+
 
 if __name__ == '__main__':
     db.create_all()
