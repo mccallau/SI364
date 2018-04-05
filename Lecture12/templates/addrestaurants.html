@@ -1,0 +1,13 @@
+<html>
+<head>
+
+</head>
+<body>
+	<h2><a href="{{ url_for('welcomepage') }}">New Search</a></h2>
+		{% for d in data %}
+		<br>
+		<a href= '{{d['restaurant']['url']}}' target= "_blank"> Click to view more details on {{d['restaurant']['name']}}</a><br><br>
+		{%endfor%}
+
+</body>
+</html>

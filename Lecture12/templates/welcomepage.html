@@ -1,0 +1,46 @@
+
+<h1>Welcome</h1>
+<h2>What type of food are you looking for?</h2><br>
+<form method="POST">
+	{{ form.csrf_token }}
+	{{ form.hidden_tag() }}
+	{{ form.cuisine.label }} {{ form.cuisine() }}<br>
+	{{ form.city.label }} {{ form.city() }}<i>example: 'Livingston, NJ'</i><br>
+	{{ form.submit() }}
+</form>
+
+<button onClick="runAJAX()">Quick List of  Restaurants in Livingston, NJ</button>
+
+<button onClick="runAJAX2()">Show the classes for Austin McCall</button>
+
+<div>
+	{% for message in get_flashed_messages() %}
+	{{ message }}
+	{% endfor %}
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script>
+function runAJAX () {
+	$.ajax({
+	  url: "/ajax",
+		dataType: "json"
+	}).done(function( data ) {
+			$.each(data.livingston, function(index, value) {
+	    $("<p>"+ value.name + "</p>").appendTo($('div'))
+			});
+	  });
+	}
+
+function runAJAX2 () {
+	$.ajax({
+	  url: "/ajax2",
+		dataType: "json"
+	}).done(function( data ) {
+			$.each(data.austin, function(index, value) {
+	    $("<p>"+ value.classes + "</p>").appendTo($('div'))
+			});
+	  });
+	}
+</script>
